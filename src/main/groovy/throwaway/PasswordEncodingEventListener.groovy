@@ -10,6 +10,7 @@ import org.grails.datastore.mapping.engine.event.PreInsertEvent
 import org.grails.datastore.mapping.engine.event.PreUpdateEvent
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationEvent
+import org.springframework.security.authentication.encoding.PasswordEncoder
 
 @InheritConstructors
 @CompileStatic
@@ -26,7 +27,7 @@ class PasswordEncodingEventListener extends AbstractPersistenceEventListener {
             if (user.password) {
                 if (event.eventType == EventType.PreInsert || user.isDirty('password')) {
                     println "Event is preinsert or password is dirty, encoding password"
-                    user.password = springSecurityService.encodePassword(user.password)
+                    user.encodePassword((PasswordEncoder)springSecurityService.passwordEncoder)
                 }
             }
         }

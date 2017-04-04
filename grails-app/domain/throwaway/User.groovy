@@ -2,6 +2,7 @@ package throwaway
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import org.springframework.security.authentication.encoding.PasswordEncoder
 
 @EqualsAndHashCode(includes='username')
 @ToString(includes='username', includeNames=true, includePackage=false)
@@ -28,4 +29,8 @@ class User implements Serializable {
 	static mapping = {
 		password column: '`password`'
 	}
+
+	void encodePassword(PasswordEncoder passwordEncoder) {
+		this.password = passwordEncoder.encodePassword(this.password, null)
+    }
 }
